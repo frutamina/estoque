@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scanner de Estoque - Frutas</title>
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    <style>
+        body { font-family: sans-serif; text-align: center; padding: 20px; background: #f4f4f4; }
+        #reader { width: 100%; max-width: 500px; margin: auto; background: white; padding: 10px; border-radius: 8px; }
+        #resultado { margin-top: 20px; padding: 15px; background: #e0ffe0; border: 1px solid #008000; display: none; border-radius: 8px; }
+        .btn-acao { padding: 10px 20px; font-size: 16px; cursor: pointer; background: #28a745; color: white; border: none; border-radius: 5px; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+    <h2>📦 Scanner de Pallets</h2>
+    <p>Aponte para o QR Code do Pallet</p>
+    
+    <div id="reader"></div>
+
+    <div id="resultado">
+        <strong>Lido com sucesso!</strong>
+        <p id="texto-lido"></p>
+        <button class="btn-acao" onclick="registrarQuebra()">Registrar Quebra (Manchados)</button>
+        <button class="btn-acao" style="background:#dc3545" onclick="darBaixa()">Dar Baixa Total</button>
+    </div>
+
+    <script>
+        function onScanSuccess(decodedText, decodedResult) {
+            // Quando ler o código, ele para o scanner e mostra o resultado
+            document.getElementById('resultado').style.display = 'block';
+            document.getElementById('texto-lido').innerText = "Conteúdo: " + decodedText;
+            
+            // Aqui você enviaria o ID para o seu banco de dados futuramente
+            console.log(`Código lido: ${decodedText}`);
+        }
+
+        function onScanFailure(error) {
+            // Erros de leitura ignoramos para não poluir o console
+        }
+
+        let html5QrcodeScanner = new Html5QrcodeScanner(
+            "reader", { fps: 10, qrbox: {width: 250, height: 250} });
+        html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+
+        function registrarQuebra() {
+            alert("Abrindo menu de quebra para manchados...");
+            // Próximo passo: Criar o formulário de quantidade
+        }
+
+        function darBaixa() {
+            alert("Dando baixa total no pallet!");
+            location.reload(); // Reseta para a próxima leitura
+        }
+    </script>
+</body>
+</html>
